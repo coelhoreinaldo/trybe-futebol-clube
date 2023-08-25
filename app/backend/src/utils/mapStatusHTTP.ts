@@ -6,6 +6,6 @@ const HTTP_PROTOCOLS: Record<string, number> = {
   unauthorized: 401,
 };
 
-const mapStatusHTTP = (status:string) => HTTP_PROTOCOLS[status] || 500;
+const mapStatusHTTP = (status:string) => HTTP_PROTOCOLS[status];
 
 export default mapStatusHTTP;
