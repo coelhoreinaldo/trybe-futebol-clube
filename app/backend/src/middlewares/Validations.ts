@@ -8,6 +8,10 @@ class Validations {
       return res.status(400).json({ message: error.message });
     }
 
+    const validEmail = /\S+@\S+\.\S+/;
+    if (!validEmail.test(req.body.email) || req.body.password.length < 6) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
     next();
   }
 }

@@ -81,6 +81,7 @@ describe('the login endpoint', () => {
     expect(body).to.have.key('message');
     expect(body.message).to.equal('All fields must be filled');
   })
+
   it('should return 400 if fields is empty', async function() {
     const { status, body } = await chai.request(app).post('/login').send({})
 
@@ -88,4 +89,33 @@ describe('the login endpoint', () => {
     expect(body).to.have.key('message');
     expect(body.message).to.equal('All fields must be filled');
   });
+
+  it('should return 401 if email is invalid', async function() {
+    const { status, body } = await chai.request(app).post('/login').send(userMock.invalidEmailLogin)
+
+    expect(status).to.equal(401)
+    expect(body).to.have.key('message');
+    expect(body.message).to.equal('Invalid email or password');
+  }
+  );
+
+  it('should return 401 if password is invalid', async function() {
+    const { status, body } = await chai.request(app).post('/login').send(userMock.invalidPasswordLogin)
+
+    expect(status).to.equal(401)
+    expect(body).to.have.key('message');
+    expect(body.message).to.equal('Invalid email or password');
+  }
+  );
+
+  it('should return 401 if password or email is wrong', async function() {
+    sinon.stub(SequelizeUser, 'findOne').resolves(userMock.foundAdminUserInDatabase as any);
+    const { status, body } = await chai.request(app).post('/login').send({email: userMock.email, password: 'wrong_password'})
+
+    expect(status).to.equal(401)
+    expect(body).to.have.key('message');
+    expect(body.message).to.equal('Invalid email or password');
+  })
+  afterEach(sinon.restore)
+
 })
