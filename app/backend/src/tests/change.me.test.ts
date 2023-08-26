@@ -26,7 +26,7 @@ describe('server', () => {
   });
 })
 
-describe('the teams endpoint', () => {
+describe('the /teams endpoint', () => {
   it('should return all teams', async function () {
     sinon.stub(SequelizeTeam, 'findAll').resolves(teams as any)
 
@@ -55,7 +55,7 @@ describe('the teams endpoint', () => {
   afterEach(sinon.restore)
 });
 
-describe('the login endpoint', () => {
+describe('the /login endpoint', () => {
   it('should return a token and status 200 if the login is successful', async function () {
     sinon.stub(SequelizeUser, 'findOne').resolves(userMock.foundAdminUserInDatabase as any);
     sinon.stub(JWT, 'sign').returns('validToken');
@@ -118,4 +118,33 @@ describe('the login endpoint', () => {
   })
   afterEach(sinon.restore)
 
+})
+
+describe('the /login/role endpoint' , () => {
+  it('should return 401 if a token is not provided', async function() {
+    const { status, body } = await chai.request(app).get('/login/role')
+
+    expect(status).to.equal(401);
+    expect(body).to.have.key('message');
+    expect(body.message).to.equal('Token not found');
+  })
+
+  it('should return 401 if a token is invalid', async function() {
+    const { status, body } = await chai.request(app).get('/login/role').set('authorization', 'invalidToken');
+
+    expect(status).to.equal(401);
+    expect(body).to.have.key('message');
+    expect(body.message).to.equal('Token must be a valid token');
+  });
+
+  it('should return status 200 and a object with user\'s role if a token is valid', async function(){
+    sinon.stub(JWT, 'verify').resolves();
+    sinon.stub(SequelizeUser, 'findOne').resolves(userMock.foundAdminUserInDatabase as any)
+
+    const { status, body } = await chai.request(app).get('/login/role');
+
+    expect(status).to.equal(200);
+    expect(body).to.have.key('role');
+    expect(body.role).to.equal('admin');
+  })
 })
