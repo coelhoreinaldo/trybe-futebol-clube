@@ -4,6 +4,7 @@ import { ILogin } from '../Interfaces/users/IUser';
 import { IUserModel } from '../Interfaces/users/IUserModel';
 import UserModel from '../models/UserModel';
 import JWT from '../utils/JWT';
+import Token from '../Interfaces/IToken';
 
 export default class UserService {
   constructor(
@@ -11,7 +12,7 @@ export default class UserService {
     private jwtService = JWT,
   ) {}
 
-  public async login(loginData:ILogin): Promise<ServiceResponse<ServiceMessage | string>> {
+  public async login(loginData:ILogin): Promise<ServiceResponse<ServiceMessage | Token>> {
     const foundUser = await this.userModel.findByEmail(loginData.email);
     if (!foundUser || !bcrypt.compareSync(loginData.password, foundUser.password)) {
       return { status: 'unauthorized', data: { message: 'Invalid email or password' } };
@@ -20,6 +21,6 @@ export default class UserService {
     const { email, password } = loginData;
     const token = this.jwtService.sign({ email, password });
 
-    return { status: 'successful', data: token };
+    return { status: 'successful', data: { token } };
   }
 }
