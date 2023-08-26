@@ -58,7 +58,7 @@ describe('the /teams endpoint', () => {
 describe('the /login endpoint', () => {
   it('should return a token and status 200 if the login is successful', async function () {
     sinon.stub(SequelizeUser, 'findOne').resolves(userMock.foundAdminUserInDatabase as any);
-    sinon.stub(JWT, 'sign').returns('validToken');
+    // sinon.stub(JWT, 'sign').returns('validToken');
     sinon.stub(Validations, 'validateLogin').returns();
 
     const { status, body } = await chai.request(app).post('/login').send(userMock.validAdminUserBody)
