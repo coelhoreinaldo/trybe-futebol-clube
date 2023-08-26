@@ -1,5 +1,5 @@
 import { IUserModel } from '../Interfaces/users/IUserModel';
-import IUser from '../Interfaces/users/IUser';
+import { IUser } from '../Interfaces/users/IUser';
 import SequelizeUser from '../database/models/SequelizeUser';
 
 export default class implements IUserModel {
