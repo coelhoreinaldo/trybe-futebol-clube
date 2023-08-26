@@ -4,11 +4,15 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
 import SequelizeTeam from '../database/models/SequelizeTeam';
+import SequelizeUser from '../database/models/SequelizeUser';
+
 import { teams } from './mocks/team.mock';
+import JWT from '../utils/JWT';
+import Validations from '../middlewares/Validations';
+import userMock from './mocks/user.mock';
 
 chai.use(chaiHttp);
 
@@ -50,3 +54,16 @@ describe('the teams endpoint', () => {
   });
   afterEach(sinon.restore)
 });
+
+describe('the login endpoint', () => {
+  it('should return a token and status 200 if the login is successful', async function () {
+    sinon.stub(SequelizeUser, 'findOne').resolves(userMock.foundAdminUserInDatabase as any);
+    sinon.stub(JWT, 'sign').returns('validToken');
+    sinon.stub(Validations, 'validateLogin').returns();
+
+    const { status, body } = await chai.request(app).post('/login').send(userMock.validAdminUserBody)
+
+    expect(status).to.equal(200)
+    expect(body).to.have.key('token');
+  });
+})
