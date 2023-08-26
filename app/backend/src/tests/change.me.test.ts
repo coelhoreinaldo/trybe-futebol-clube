@@ -66,4 +66,26 @@ describe('the login endpoint', () => {
     expect(status).to.equal(200)
     expect(body).to.have.key('token');
   });
+  it('should return status 400 if a email is not provided', async function() {
+    const { status, body } = await chai.request(app).post('/login').send({ password: 'secret_admin'})
+
+    expect(status).to.equal(400)
+    expect(body).to.have.key('message');
+    expect(body.message).to.equal('All fields must be filled');
+
+  })
+  it('should return status 400 if a password is not provided', async function() {
+    const { status, body } = await chai.request(app).post('/login').send({ email: 'admin@admin.com'})
+
+    expect(status).to.equal(400)
+    expect(body).to.have.key('message');
+    expect(body.message).to.equal('All fields must be filled');
+  })
+  it('should return 400 if fields is empty', async function() {
+    const { status, body } = await chai.request(app).post('/login').send({})
+
+    expect(status).to.equal(400)
+    expect(body).to.have.key('message');
+    expect(body.message).to.equal('All fields must be filled');
+  });
 })
