@@ -139,12 +139,13 @@ describe('the /login/role endpoint' , () => {
 
   it('should return status 200 and a object with user\'s role if a token is valid', async function(){
     sinon.stub(JWT, 'verify').resolves();
+    sinon.stub(Validations, 'validateToken').returns();
     sinon.stub(SequelizeUser, 'findOne').resolves(userMock.foundAdminUserInDatabase as any)
 
-    const { status, body } = await chai.request(app).get('/login/role');
+    const { status, body } = await chai.request(app).get('/login/role').set('authorization', 'validToken');
 
-    expect(status).to.equal(200);
     expect(body).to.have.key('role');
+    expect(status).to.equal(200);
     expect(body.role).to.equal('admin');
   })
 })

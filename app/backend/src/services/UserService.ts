@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import { ServiceResponse, ServiceMessage } from '../Interfaces/ServiceResponse';
-import { ILogin } from '../Interfaces/users/IUser';
+import { ILogin, IUser } from '../Interfaces/users/IUser';
 import { IUserModel } from '../Interfaces/users/IUserModel';
 import UserModel from '../models/UserModel';
 import JWT from '../utils/JWT';
@@ -22,5 +22,10 @@ export default class UserService {
     const token = this.jwtService.sign({ email, password });
 
     return { status: 'successful', data: { token } };
+  }
+
+  public async getRole(email:string): Promise<ServiceResponse<Record<string, string>>> {
+    const foundUser = await this.userModel.findByEmail(email) as IUser;
+    return { status: 'successful', data: { role: foundUser.role } };
   }
 }
