@@ -12,8 +12,9 @@ export default class JWT {
     return sign({ ...payload }, this.secret, this.jwtConfig);
   }
 
-  static verify(token: string): JwtPayload | string {
+  static verify(bearerToken: string): JwtPayload | string {
     try {
+      const token = bearerToken.split(' ')[1];
       return verify(token, this.secret) as JwtPayload;
     } catch (error) {
       return 'Token must be a valid token';
