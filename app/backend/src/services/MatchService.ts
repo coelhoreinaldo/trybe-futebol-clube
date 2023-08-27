@@ -5,11 +5,11 @@ import MatchModel from '../models/MatchModel';
 
 export default class MatchService {
   constructor(
-    private teamModel: IMatchModel = new MatchModel(),
+    private matchModel: IMatchModel = new MatchModel(),
   ) {}
 
   public async getAllMatches(): Promise<ServiceResponse<IMatch[]>> {
-    const allMatches = await this.teamModel.findAll();
+    const allMatches = await this.matchModel.findAll();
     return { status: 'successful', data: allMatches };
   }
 }
