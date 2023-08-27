@@ -161,4 +161,22 @@ describe('the /matches endpoint', () => {
     expect(status).to.equal(200);
     expect(body).to.deep.equal(matchMock.matches);
   })
+
+  it('should return status 200 and only matches in progress', async function(){
+    sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.matchesInProgress as any)
+
+    const { status, body } = await chai.request(app).get('/matches?inProgress=true');
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(matchMock.matchesInProgress);
+  })
+
+  it('should return status 200 and only finished matches', async function(){
+    sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.finishedMatches as any)
+
+    const { status, body } = await chai.request(app).get('/matches?inProgress=false');
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(matchMock.finishedMatches);
+  });
 })
