@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import IMatch from '../Interfaces/matches/IMatch';
 import MatchService from '../services/MatchService';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
 
@@ -16,6 +17,13 @@ export default class MatchController {
   public async finishMatch(req: Request, res: Response):Promise<Response> {
     const { id } = req.params;
     const serviceResponse = await this.matchService.finishMatch(Number(id));
+    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
+  }
+
+  public async updateMatch(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const data = req.body;
+    const serviceResponse = await this.matchService.updateMatch(Number(id), data as IMatch);
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
 }

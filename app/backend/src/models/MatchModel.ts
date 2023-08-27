@@ -17,7 +17,12 @@ export default class implements IMatchModel {
   }
 
   public async findById(id: IMatch['id']): Promise<IMatch | null> {
-    const dbData = await this.model.findByPk(id);
+    const dbData = await this.model.findByPk(id, {
+      include: [
+        { model: SequelizeTeam, as: 'homeTeam', attributes: ['teamName'] },
+        { model: SequelizeTeam, as: 'awayTeam', attributes: ['teamName'] },
+      ],
+    });
     return dbData;
   }
 
@@ -32,9 +37,13 @@ export default class implements IMatchModel {
     return dbData;
   }
 
-  public async finishMatch(id: IMatch['id']): Promise<boolean> {
-    const updatedMatch = await this.model.update({ inProgress: false }, { where: { id } });
-    console.log(updatedMatch);
-    return true;
+  public async finishMatch(id: IMatch['id']): Promise<void> {
+    await this.model.update({ inProgress: false }, { where: { id } });
+  }
+
+  public async update(id: number, data: Partial<IMatch>): Promise<IMatch | null> {
+    await this.model.update(data, { where: { id } });
+    const updatedMatch = await this.findById(id);
+    return updatedMatch;
   }
 }

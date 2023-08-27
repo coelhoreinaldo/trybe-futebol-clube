@@ -31,4 +31,20 @@ export default class MatchService {
     await this.matchModel.finishMatch(id);
     return { status: 'successful', data: { message: 'Finished' } };
   }
+
+  public async updateMatch(id: IMatch['id'], bodyData: IMatch)
+    : Promise<ServiceResponse<IMatch | null>> {
+    const foundMatch = await this.matchModel.findById(id);
+    if (!foundMatch) {
+      return { status: 'notFound', data: { message: 'Match not found' } };
+    }
+
+    if (!foundMatch.inProgress) {
+      return { status: 'invalidData', data: { message: 'Match already finished' } };
+    }
+
+    const updatedMatch = await this.matchModel.update(id, bodyData);
+
+    return { status: 'successful', data: updatedMatch };
+  }
 }
