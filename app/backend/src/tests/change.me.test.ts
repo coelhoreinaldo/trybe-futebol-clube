@@ -179,4 +179,6 @@ describe('the /matches endpoint', () => {
     expect(status).to.equal(200);
     expect(body).to.deep.equal(matchMock.finishedMatches);
   });
+
+  afterEach(sinon.restore)
 })
