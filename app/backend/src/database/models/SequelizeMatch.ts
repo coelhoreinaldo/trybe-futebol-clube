@@ -71,12 +71,12 @@ SequelizeMatch.init({
 });
 
 SequelizeMatch.belongsTo(SequelizeTeam, {
-  foreignKey: 'id',
+  foreignKey: 'homeTeamId',
   as: 'homeTeam',
 });
 
 SequelizeMatch.belongsTo(SequelizeTeam, {
-  foreignKey: 'id',
+  foreignKey: 'awayTeamId',
   as: 'awayTeam',
 });
 

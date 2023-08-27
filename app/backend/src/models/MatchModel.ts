@@ -7,7 +7,7 @@ export default class implements IMatchModel {
   private model = SequelizeMatch;
 
   public async findAll(): Promise<IMatch[]> {
-    const dbData = this.model.findAll(
+    const dbData = await this.model.findAll(
       {
         include: [{
           model: SequelizeTeam,
