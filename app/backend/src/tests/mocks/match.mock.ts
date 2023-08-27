@@ -7,10 +7,10 @@ const matches = [
     awayTeamGoals: 1,
     inProgress: false,
     homeTeam: {
-      teamName: 'Avaí/Kindermann',
+      teamName: 'São Paulo',
     },
     awayTeam: {
-      teamName: 'Avaí/Kindermann',
+      teamName: 'Grêmio',
     },
   },
   {
@@ -21,10 +21,10 @@ const matches = [
     awayTeamGoals: 1,
     inProgress: false,
     homeTeam: {
-      teamName: 'Bahia',
+      teamName: 'Internacional',
     },
     awayTeam: {
-      teamName: 'Bahia',
+      teamName: 'Santos',
     },
   },
   {
@@ -35,10 +35,10 @@ const matches = [
     awayTeamGoals: 0,
     inProgress: false,
     homeTeam: {
-      teamName: 'Botafogo',
+      teamName: 'Corinthians',
     },
     awayTeam: {
-      teamName: 'Botafogo',
+      teamName: 'Napoli-SC',
     },
   },
   {
@@ -49,10 +49,10 @@ const matches = [
     awayTeamGoals: 0,
     inProgress: false,
     homeTeam: {
-      teamName: 'Corinthians',
+      teamName: 'Botafogo',
     },
     awayTeam: {
-      teamName: 'Corinthians',
+      teamName: 'Bahia',
     },
   },
   {
@@ -63,10 +63,10 @@ const matches = [
     awayTeamGoals: 1,
     inProgress: false,
     homeTeam: {
-      teamName: 'Cruzeiro',
+      teamName: 'Flamengo',
     },
     awayTeam: {
-      teamName: 'Cruzeiro',
+      teamName: 'Minas Brasília',
     },
   },
   {
@@ -77,10 +77,10 @@ const matches = [
     awayTeamGoals: 1,
     inProgress: false,
     homeTeam: {
-      teamName: 'Ferroviária',
+      teamName: 'Cruzeiro',
     },
     awayTeam: {
-      teamName: 'Ferroviária',
+      teamName: 'Real Brasília',
     },
   },
   {
@@ -91,10 +91,10 @@ const matches = [
     awayTeamGoals: 2,
     inProgress: false,
     homeTeam: {
-      teamName: 'Flamengo',
+      teamName: 'Palmeiras',
     },
     awayTeam: {
-      teamName: 'Flamengo',
+      teamName: 'Ferroviária',
     },
   },
   {
@@ -105,10 +105,10 @@ const matches = [
     awayTeamGoals: 1,
     inProgress: false,
     homeTeam: {
-      teamName: 'Grêmio',
+      teamName: 'São José-SP',
     },
     awayTeam: {
-      teamName: 'Grêmio',
+      teamName: 'Avaí/Kindermann',
     },
   },
   {
@@ -119,10 +119,10 @@ const matches = [
     awayTeamGoals: 3,
     inProgress: false,
     homeTeam: {
-      teamName: 'Internacional',
+      teamName: 'Avaí/Kindermann',
     },
     awayTeam: {
-      teamName: 'Internacional',
+      teamName: 'Palmeiras',
     },
   },
   {
@@ -133,10 +133,10 @@ const matches = [
     awayTeamGoals: 2,
     inProgress: false,
     homeTeam: {
-      teamName: 'Minas Brasília',
+      teamName: 'Bahia',
     },
     awayTeam: {
-      teamName: 'Minas Brasília',
+      teamName: 'Internacional',
     },
   },
 ];
