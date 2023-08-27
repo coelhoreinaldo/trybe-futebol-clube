@@ -1,4 +1,4 @@
-import { ServiceResponse } from '../Interfaces/ServiceResponse';
+import { ServiceMessage, ServiceResponse } from '../Interfaces/ServiceResponse';
 import IMatch from '../Interfaces/matches/IMatch';
 import { IMatchModel } from '../Interfaces/matches/IMatchModel';
 import MatchModel from '../models/MatchModel';
@@ -16,5 +16,10 @@ export default class MatchService {
     }
     const allMatches = await this.matchModel.findAll();
     return { status: 'successful', data: allMatches };
+  }
+
+  public async finishMatch(id: IMatch['id']): Promise<ServiceResponse<ServiceMessage>> {
+    await this.matchModel.finishMatch(id);
+    return { status: 'successful', data: { message: 'Finished' } };
   }
 }

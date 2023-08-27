@@ -26,4 +26,10 @@ export default class implements IMatchModel {
     });
     return dbData;
   }
+
+  public async finishMatch(id: IMatch['id']): Promise<boolean> {
+    const updatedMatch = await this.model.update({ inProgress: false }, { where: { id } });
+    console.log(updatedMatch);
+    return true;
+  }
 }
