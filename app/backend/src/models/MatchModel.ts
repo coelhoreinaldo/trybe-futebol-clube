@@ -7,19 +7,23 @@ export default class implements IMatchModel {
   private model = SequelizeMatch;
 
   public async findAll(): Promise<IMatch[]> {
-    const dbData = await this.model.findAll(
-      {
-        include: [{
-          model: SequelizeTeam,
-          as: 'homeTeam',
-          attributes: ['teamName'],
-        }, {
-          model: SequelizeTeam,
-          as: 'awayTeam',
-          attributes: ['teamName'],
-        }],
-      },
-    );
+    const dbData = await this.model.findAll({
+      include: [
+        { model: SequelizeTeam, as: 'homeTeam', attributes: ['teamName'] },
+        { model: SequelizeTeam, as: 'awayTeam', attributes: ['teamName'] },
+      ],
+    });
+    return dbData;
+  }
+
+  public async findByProgress(inProgress: boolean): Promise<IMatch[]> {
+    const dbData = await this.model.findAll({
+      where: { inProgress },
+      include: [
+        { model: SequelizeTeam, as: 'homeTeam', attributes: ['teamName'] },
+        { model: SequelizeTeam, as: 'awayTeam', attributes: ['teamName'] },
+      ],
+    });
     return dbData;
   }
 }

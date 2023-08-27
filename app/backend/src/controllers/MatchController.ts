@@ -8,7 +8,8 @@ export default class MatchController {
   ) {}
 
   public async getAllMatches(req: Request, res: Response):Promise<Response> {
-    const serviceResponse = await this.matchService.getAllMatches();
+    const isInProgressFilter = req.query.inProgress;
+    const serviceResponse = await this.matchService.getAllMatches(isInProgressFilter as string);
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
 }
