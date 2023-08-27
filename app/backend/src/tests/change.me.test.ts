@@ -13,6 +13,8 @@ import { teams } from './mocks/team.mock';
 import JWT from '../utils/JWT';
 import Validations from '../middlewares/Validations';
 import userMock from './mocks/user.mock';
+import matchMock from './mocks/match.mock';
+import SequelizeMatch from '../database/models/SequelizeMatch';
 
 chai.use(chaiHttp);
 
@@ -147,5 +149,16 @@ describe('the /login/role endpoint' , () => {
     expect(body).to.have.key('role');
     expect(status).to.equal(200);
     expect(body.role).to.equal('admin');
+  })
+})
+
+describe('the /matches endpoint', () => {
+  it('should return status 200 and all matches', async function(){
+    sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.matches as any);
+
+    const { status, body } = await chai.request(app).get('/matches');
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(matchMock.matches);
   })
 })
