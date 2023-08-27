@@ -16,6 +16,11 @@ export default class implements IMatchModel {
     return dbData;
   }
 
+  public async findById(id: IMatch['id']): Promise<IMatch | null> {
+    const dbData = await this.model.findByPk(id);
+    return dbData;
+  }
+
   public async findByProgress(inProgress: boolean): Promise<IMatch[]> {
     const dbData = await this.model.findAll({
       where: { inProgress },

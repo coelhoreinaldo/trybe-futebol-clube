@@ -19,6 +19,15 @@ export default class MatchService {
   }
 
   public async finishMatch(id: IMatch['id']): Promise<ServiceResponse<ServiceMessage>> {
+    const foundMatch = await this.matchModel.findById(id);
+    if (!foundMatch) {
+      return { status: 'notFound', data: { message: 'Match not found' } };
+    }
+
+    if (!foundMatch.inProgress) {
+      return { status: 'invalidData', data: { message: 'Match already finished' } };
+    }
+
     await this.matchModel.finishMatch(id);
     return { status: 'successful', data: { message: 'Finished' } };
   }
