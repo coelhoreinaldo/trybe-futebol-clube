@@ -64,6 +64,7 @@ export default class MatchService {
       return { status: 'notFound', data: { message: 'There is no team with such id!' } };
     }
     const newMatch = await this.matchModel.create(matchData);
-    return { status: 'successful', data: newMatch as unknown as IMatch };
+
+    return { status: 'created', data: newMatch as unknown as IMatch };
   }
 }

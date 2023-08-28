@@ -246,7 +246,7 @@ const foundTeam1 = {
 
 const foundTeam2 = {
   id: 8,
-  teamName: 'Palmeiras',
+  teamName: 'Grêmio',
 };
 
 const createMatchWithTheSameTeams = {

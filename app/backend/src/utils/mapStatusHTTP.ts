@@ -1,5 +1,6 @@
 const HTTP_PROTOCOLS: Record<string, number> = {
   successful: 200,
+  created: 201,
   invalidData: 400,
   notFound: 404,
   conflict: 409,

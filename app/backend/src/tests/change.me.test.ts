@@ -322,7 +322,7 @@ describe('the /matches endpoint', () => {
     });
   });
   describe('by post method', () => {
-    // it('should return status 201 and create a match', async function () {
+    // it.only('should return status 201 and create a match', async function () {
     //   sinon.stub(JWT, 'verify').resolves();
     //   sinon.stub(Validations, 'validateToken').returns();
     //   sinon
@@ -341,7 +341,7 @@ describe('the /matches endpoint', () => {
     //     .send(matchMock.createMatchBody)
     //     .set('authorization', 'validToken');
 
-    //   expect(body).to.deep.equal(matchMock.createdMatch);
+    //     expect(body).to.deep.equal(matchMock.createdMatch);
     //   expect(status).to.equal(201);
     // });
     it('should return status 422 if the teams are the same', async function () {
