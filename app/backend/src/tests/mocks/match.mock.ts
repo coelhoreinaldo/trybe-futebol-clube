@@ -249,6 +249,20 @@ const foundTeam2 = {
   teamName: 'Palmeiras',
 };
 
+const createMatchWithTheSameTeams = {
+  homeTeamId: 12,
+  awayTeamId: 12,
+  homeTeamGoals: 3,
+  awayTeamGoals: 2,
+}
+
+const createMatchWithInexistentTeam = {
+  homeTeamId: 12,
+  awayTeamId: 99,
+  homeTeamGoals: 3,
+  awayTeamGoals: 2,
+}
+
 export default {
   matches,
   matchesInProgress,
@@ -258,5 +272,7 @@ export default {
   createdMatch,
   createMatchBody,
   foundTeam1,
-  foundTeam2
+  foundTeam2,
+  createMatchWithTheSameTeams,
+  createMatchWithInexistentTeam
 };

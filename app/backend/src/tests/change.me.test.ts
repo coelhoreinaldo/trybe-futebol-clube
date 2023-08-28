@@ -268,6 +268,28 @@ describe('the /matches endpoint', () => {
       expect(status).to.equal(201);
       expect(body).to.deep.equal(matchMock.createdMatch);
     });
+    it('should return status 422 if the teams are the same', async function(){
+      sinon.stub(JWT,'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeTeam, 'findByPk').onFirstCall().resolves(matchMock.foundTeam1 as any).onSecondCall().resolves(matchMock.foundTeam1 as any);
+
+      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchWithTheSameTeams)
+
+      expect(status).to.equal(422);
+      expect(body).to.have.key('message');
+      expect(body.message).to.equal('It is not possible to create a match with two equal teams');
+    });
+    it('should return status 404 if a team is not found', async function(){
+      sinon.stub(JWT,'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeTeam, 'findByPk').onFirstCall().resolves(matchMock.foundTeam1 as any).onSecondCall().resolves(null);
+
+      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchWithInexistentTeam)
+
+      expect(status).to.equal(404);
+      expect(body).to.have.key('message');
+      expect(body.message).to.equal("There is no team with such id!");
+    });
   })
 
   afterEach(sinon.restore)
