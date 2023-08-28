@@ -60,7 +60,7 @@ SequelizeMatch.init({
   },
   inProgress: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false,
+    defaultValue: true,
     field: 'in_progress',
   },
 }, {

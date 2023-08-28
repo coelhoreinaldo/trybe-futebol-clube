@@ -260,20 +260,19 @@ describe('the /matches endpoint', () => {
     it('should return status 201 and create a match', async function(){
       sinon.stub(JWT,'verify').resolves();
       sinon.stub(Validations, 'validateToken').returns();
-      sinon.stub(SequelizeTeam, 'findByPk').onFirstCall().resolves(matchMock.foundTeam1 as any).onSecondCall().resolves(matchMock.foundTeam2 as any);
       sinon.stub(SequelizeMatch, 'create').resolves(matchMock.createdMatch as any);
+      sinon.stub(SequelizeTeam, 'findByPk').onFirstCall().resolves(matchMock.foundTeam1 as any).onSecondCall().resolves(matchMock.foundTeam2 as any);
 
-      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchBody)
+      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchBody).set('authorization', 'validToken')
 
-      expect(status).to.equal(201);
       expect(body).to.deep.equal(matchMock.createdMatch);
+      expect(status).to.equal(201);
     });
     it('should return status 422 if the teams are the same', async function(){
       sinon.stub(JWT,'verify').resolves();
       sinon.stub(Validations, 'validateToken').returns();
-      sinon.stub(SequelizeTeam, 'findByPk').onFirstCall().resolves(matchMock.foundTeam1 as any).onSecondCall().resolves(matchMock.foundTeam1 as any);
 
-      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchWithTheSameTeams)
+      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchWithTheSameTeams).set('authorization', 'validToken')
 
       expect(status).to.equal(422);
       expect(body).to.have.key('message');
@@ -284,7 +283,7 @@ describe('the /matches endpoint', () => {
       sinon.stub(Validations, 'validateToken').returns();
       sinon.stub(SequelizeTeam, 'findByPk').onFirstCall().resolves(matchMock.foundTeam1 as any).onSecondCall().resolves(null);
 
-      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchWithInexistentTeam)
+      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchWithInexistentTeam).set('authorization', 'validToken')
 
       expect(status).to.equal(404);
       expect(body).to.have.key('message');
