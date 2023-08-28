@@ -153,32 +153,109 @@ describe('the /login/role endpoint' , () => {
 })
 
 describe('the /matches endpoint', () => {
-  it('should return status 200 and all matches', async function(){
-    sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.matches as any);
-
-    const { status, body } = await chai.request(app).get('/matches');
-
-    expect(status).to.equal(200);
-    expect(body).to.deep.equal(matchMock.matches);
+  describe('by get method', () => {
+    it('should return status 200 and all matches', async function(){
+      sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.matches as any);
+  
+      const { status, body } = await chai.request(app).get('/matches');
+  
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(matchMock.matches);
+    })
+  
+    it('should return status 200 and only matches in progress', async function(){
+      sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.matchesInProgress as any)
+  
+      const { status, body } = await chai.request(app).get('/matches?inProgress=true');
+  
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(matchMock.matchesInProgress);
+    })
+  
+    it('should return status 200 and only finished matches', async function(){
+      sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.finishedMatches as any)
+  
+      const { status, body } = await chai.request(app).get('/matches?inProgress=false');
+  
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(matchMock.finishedMatches);
+    });
   })
+  describe('by patch method', () => {
+    it('should return status 200 and finish a match', async function(){
+      sinon.stub(JWT, 'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeMatch, 'findByPk').resolves(matchMock.matchesInProgress[0] as any);
+      sinon.stub(SequelizeMatch, 'update').resolves();
 
-  it('should return status 200 and only matches in progress', async function(){
-    sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.matchesInProgress as any)
+      const { status, body } = await chai.request(app).patch('/matches/1/finish').set('authorization', 'validToken');
 
-    const { status, body } = await chai.request(app).get('/matches?inProgress=true');
+      expect(status).to.equal(200);
+      expect(body).to.have.key('message');
+      expect(body.message).to.equal('Finished');
+    });
 
-    expect(status).to.equal(200);
-    expect(body).to.deep.equal(matchMock.matchesInProgress);
+    it('should return status 401 if the match is already finished', async function(){
+      sinon.stub(JWT, 'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeMatch, 'findByPk').resolves(matchMock.finishedMatches[0] as any);
+
+      const { status, body } = await chai.request(app).patch('/matches/1/finish').set('authorization', 'validToken');
+
+      expect(status).to.equal(400);
+      expect(body).to.have.key('message');
+      expect(body.message).to.equal('Match already finished');
+    });
+
+    it('should return status 404 if the match is not found', async function(){
+      sinon.stub(JWT, 'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeMatch, 'findByPk').resolves(null);
+
+      const { status, body } = await chai.request(app).patch('/matches/1/finish').set('authorization', 'validToken');
+
+      expect(status).to.equal(404);
+      expect(body).to.have.key('message');
+      expect(body.message).to.equal('Match not found');
+    });
+
+    it('should return status 200 and update a match', async function(){
+      sinon.stub(JWT, 'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeMatch, 'update').resolves();
+      sinon.stub(SequelizeMatch, 'findByPk').onFirstCall().resolves(matchMock.matchesInProgress[0] as any).onSecondCall().resolves(matchMock.updatedMatch as any);
+      
+
+      const { status, body } = await chai.request(app).patch('/matches/1').send(matchMock.updateMatchValidBody).set('authorization', 'validToken');
+
+      expect(body).to.deep.equal(matchMock.updatedMatch);
+      expect(status).to.equal(200);
+    });
+
+    it('should return status 404 if the match is not found', async function(){
+      sinon.stub(JWT, 'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeMatch, 'findByPk').resolves(null);
+
+      const { status, body } = await chai.request(app).patch('/matches/1').send(matchMock.updateMatchValidBody).set('authorization', 'validToken');
+
+      expect(status).to.equal(404);
+      expect(body).to.have.key('message');
+      expect(body.message).to.equal('Match not found');
+    });
+
+    it('should return status 400 if the match is already finished', async function(){
+      sinon.stub(JWT, 'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeMatch, 'findByPk').resolves(matchMock.finishedMatches[0] as any);
+
+      const { status, body } = await chai.request(app).patch('/matches/1').send(matchMock.updateMatchValidBody).set('authorization', 'validToken');
+
+      expect(status).to.equal(400);
+      expect(body).to.have.key('message');
+      expect(body.message).to.equal('Match already finished');
+    });
   })
-
-  it('should return status 200 and only finished matches', async function(){
-    sinon.stub(SequelizeMatch, 'findAll').resolves(matchMock.finishedMatches as any)
-
-    const { status, body } = await chai.request(app).get('/matches?inProgress=false');
-
-    expect(status).to.equal(200);
-    expect(body).to.deep.equal(matchMock.finishedMatches);
-  });
 
   afterEach(sinon.restore)
 })

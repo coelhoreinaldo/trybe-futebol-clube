@@ -203,4 +203,24 @@ const finishedMatches = [
   },
 ];
 
-export default { matches, matchesInProgress, finishedMatches };
+const updateMatchValidBody = {
+  homeTeamGoals: 4,
+  awayTeamGoals: 39,
+}
+
+const updatedMatch =   {
+  id: 1,
+  homeTeamId: 16,
+  homeTeamGoals: updateMatchValidBody.homeTeamGoals,
+  awayTeamId: 8,
+  awayTeamGoals: updateMatchValidBody.awayTeamGoals,
+  inProgress: false,
+  homeTeam: {
+    teamName: 'São Paulo',
+  },
+  awayTeam: {
+    teamName: 'Grêmio',
+  },
+};
+
+export default { matches, matchesInProgress, finishedMatches, updateMatchValidBody, updatedMatch };
