@@ -50,7 +50,7 @@ export default class MatchService {
   }
 
   public async createMatch(matchData: NewEntity<IMatch>): Promise<ServiceResponse<IMatch>> {
-    const newMatch = await this.createMatch(matchData);
+    const newMatch = await this.matchModel.create(matchData);
     if (!newMatch) {
       return { status: 'conflict', data: { message: 'deu ruim' } };
     }
