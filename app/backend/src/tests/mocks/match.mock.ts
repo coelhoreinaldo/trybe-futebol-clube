@@ -206,9 +206,9 @@ const finishedMatches = [
 const updateMatchValidBody = {
   homeTeamGoals: 4,
   awayTeamGoals: 39,
-}
+};
 
-const updatedMatch =   {
+const updatedMatch = {
   id: 1,
   homeTeamId: 16,
   homeTeamGoals: updateMatchValidBody.homeTeamGoals,
@@ -223,4 +223,40 @@ const updatedMatch =   {
   },
 };
 
-export default { matches, matchesInProgress, finishedMatches, updateMatchValidBody, updatedMatch };
+const createdMatch = {
+  id: 1,
+  homeTeamId: 12,
+  homeTeamGoals: 3,
+  awayTeamId: 8,
+  awayTeamGoals: 2,
+  inProgress: true,
+};
+
+const createMatchBody = {
+  homeTeamId: 12,
+  awayTeamId: 8,
+  homeTeamGoals: 3,
+  awayTeamGoals: 2,
+};
+
+const foundTeam1 = {
+  id: 12,
+  teamName: 'Palmeiras',
+};
+
+const foundTeam2 = {
+  id: 8,
+  teamName: 'Palmeiras',
+};
+
+export default {
+  matches,
+  matchesInProgress,
+  finishedMatches,
+  updateMatchValidBody,
+  updatedMatch,
+  createdMatch,
+  createMatchBody,
+  foundTeam1,
+  foundTeam2
+};

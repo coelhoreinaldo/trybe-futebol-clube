@@ -256,6 +256,19 @@ describe('the /matches endpoint', () => {
       expect(body.message).to.equal('Match already finished');
     });
   })
+  describe('by post method', () => {
+    it('should return status 201 and create a match', async function(){
+      sinon.stub(JWT,'verify').resolves();
+      sinon.stub(Validations, 'validateToken').returns();
+      sinon.stub(SequelizeTeam, 'findByPk').onFirstCall().resolves(matchMock.foundTeam1 as any).onSecondCall().resolves(matchMock.foundTeam2 as any);
+      sinon.stub(SequelizeMatch, 'create').resolves(matchMock.createdMatch as any);
+
+      const { status, body } = await chai.request(app).post('/matches').send(matchMock.createMatchBody)
+
+      expect(status).to.equal(201);
+      expect(body).to.deep.equal(matchMock.createdMatch);
+    });
+  })
 
   afterEach(sinon.restore)
 })
