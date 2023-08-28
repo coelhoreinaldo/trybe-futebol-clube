@@ -1,3 +1,4 @@
+import { NewEntity } from '../Interfaces';
 import { ServiceMessage, ServiceResponse } from '../Interfaces/ServiceResponse';
 import IMatch from '../Interfaces/matches/IMatch';
 import { IMatchModel } from '../Interfaces/matches/IMatchModel';
@@ -46,5 +47,13 @@ export default class MatchService {
     const updatedMatch = await this.matchModel.update(id, bodyData);
 
     return { status: 'successful', data: updatedMatch };
+  }
+
+  public async createMatch(matchData: NewEntity<IMatch>): Promise<ServiceResponse<IMatch>> {
+    const newMatch = await this.createMatch(matchData);
+    if (!newMatch) {
+      return { status: 'conflict', data: { message: 'deu ruim' } };
+    }
+    return { status: 'successful', data: newMatch as unknown as IMatch };
   }
 }
