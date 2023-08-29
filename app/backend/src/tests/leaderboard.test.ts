@@ -13,8 +13,7 @@ const { expect } = chai;
 
 
 describe('the /leaderboard endpoint', () => {
-  describe('on /home', () => {
-    it('should return all teams', async function () {
+    it('should return all home teams standings', async function () {
      sinon.stub(sequelize, 'query').resolves(leaderboardMock.leaderboardHomeTeamsFromDb as any);
 
       const { status, body } = await chai.request(app).get('/leaderboard/home');
@@ -22,6 +21,15 @@ describe('the /leaderboard endpoint', () => {
       expect(status).to.equal(200);
       expect(body).to.deep.equal(leaderboardMock.leaderboardHomeTeamsFromDb);
     });
-  })
+
+    it('should return all away teams standings', async function () {
+      sinon.stub(sequelize, 'query').resolves(leaderboardMock.leaderboardAwayTeamsFromDb as any);
+
+      const { status, body } = await chai.request(app).get('/leaderboard/away');
+
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(leaderboardMock.leaderboardAwayTeamsFromDb);
+    });
+    
   afterEach(sinon.restore);
 });
