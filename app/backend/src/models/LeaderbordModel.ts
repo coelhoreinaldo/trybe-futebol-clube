@@ -34,22 +34,9 @@ export default class LeaderboardModel implements ILeaderboardModel {
     const homeTeams = await this.findAllHomeTeamStanding();
     const awayTeams = await this.findAllAwayTeamStanding();
 
-    homeTeams.sort((a, b) => a.name.localeCompare(b.name));
-    awayTeams.sort((a, b) => a.name.localeCompare(b.name));
+    const newStandings = LeaderboardModel.compareTeamsStandings(homeTeams, awayTeams);
 
-    homeTeams.forEach((e, index) => {
-      e.totalGames += awayTeams[index].totalGames;
-      e.totalPoints += awayTeams[index].totalPoints;
-      e.totalVictories += awayTeams[index].totalVictories;
-      e.totalDraws += awayTeams[index].totalDraws;
-      e.totalLosses += awayTeams[index].totalLosses;
-      e.goalsFavor += awayTeams[index].goalsFavor;
-      e.goalsOwn += awayTeams[index].goalsOwn;
-      e.goalsBalance = e.goalsFavor - e.goalsOwn;
-      e.efficiency = +((e.totalPoints / (e.totalGames * 3)) * 100).toFixed(2);
-    });
-
-    return LeaderboardModel.getSortedLeaderboard(homeTeams);
+    return LeaderboardModel.getSortedLeaderboard(newStandings);
   }
 
   private static getFormattedLeaderboard = (leaderboardFromDb: ILeaderboard[]) =>
@@ -71,4 +58,26 @@ export default class LeaderboardModel implements ILeaderboardModel {
       if (a.goalsBalance !== b.goalsBalance) return b.goalsBalance - a.goalsBalance;
       return b.goalsFavor - a.goalsFavor;
     });
+
+  private static compareTeamsStandings = (
+    leaderboardHome: ILeaderboard[],
+    leaderboardAway: ILeaderboard[],
+  ) => {
+    leaderboardHome.sort((a, b) => a.name.localeCompare(b.name));
+    leaderboardAway.sort((a, b) => a.name.localeCompare(b.name));
+
+    leaderboardHome.forEach((e, index) => {
+      e.totalGames += leaderboardAway[index].totalGames;
+      e.totalPoints += leaderboardAway[index].totalPoints;
+      e.totalVictories += leaderboardAway[index].totalVictories;
+      e.totalDraws += leaderboardAway[index].totalDraws;
+      e.totalLosses += leaderboardAway[index].totalLosses;
+      e.goalsFavor += leaderboardAway[index].goalsFavor;
+      e.goalsOwn += leaderboardAway[index].goalsOwn;
+      e.goalsBalance = e.goalsFavor - e.goalsOwn;
+      e.efficiency = +((e.totalPoints / (e.totalGames * 3)) * 100).toFixed(2);
+    });
+
+    return leaderboardHome;
+  };
 }
