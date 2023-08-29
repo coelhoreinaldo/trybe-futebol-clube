@@ -30,6 +30,24 @@ export default class LeaderboardModel implements ILeaderboardModel {
     return dbData;
   }
 
+  public async findAllTeamStamStanding(): Promise<ILeaderboard[]> {
+    const homeTeams = await this.findAllHomeTeamStanding();
+    const awayTeams = await this.findAllAwayTeamStanding();
+
+    homeTeams.forEach((e, index) => {
+      e.totalPoints += awayTeams[index].totalPoints;
+      e.totalVictories += awayTeams[index].totalVictories;
+      e.totalDraws += awayTeams[index].totalDraws;
+      e.totalLosses += awayTeams[index].totalLosses;
+      e.goalsFavor += awayTeams[index].goalsFavor;
+      e.goalsOwn += awayTeams[index].goalsOwn;
+      e.goalsBalance = e.goalsFavor - e.goalsOwn;
+      e.efficiency = +((e.totalPoints / (e.totalGames * 3)) * 100).toFixed(2);
+    });
+
+    return homeTeams;
+  }
+
   private static getFormattedLeaderboard = (leaderboardFromDb: ILeaderboard[]) =>
     leaderboardFromDb.forEach((e) => {
       e.totalPoints = Number(e.totalPoints);
