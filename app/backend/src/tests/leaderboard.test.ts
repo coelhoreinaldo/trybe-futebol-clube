@@ -30,6 +30,15 @@ describe('the /leaderboard endpoint', () => {
       expect(status).to.equal(200);
       expect(body).to.deep.equal(leaderboardMock.leaderboardAwayTeamsFromDb);
     });
+
+    it('should return all teams standings', async function () {
+      sinon.stub(sequelize, 'query').resolves(leaderboardMock.leaderboardAllTeams as any);
     
+      const { status, body } = await chai.request(app).get('/leaderboard');
+
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(leaderboardMock.leaderboardAllTeams);
+    });     
+
   afterEach(sinon.restore);
 });
