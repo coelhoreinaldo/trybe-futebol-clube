@@ -28,6 +28,30 @@ export default class LeaderboardModel implements ILeaderboardModel {
     const dbData: ILeaderboard[] = await db.query(this.homeTeamStandingsQuery, {
       type: QueryTypes.SELECT,
     });
+
+    LeaderboardModel.getFormattedLeaderboard(dbData);
+    LeaderboardModel.getSortedLeaderboard(dbData);
+
     return dbData;
   }
+
+  private static getFormattedLeaderboard = (leaderboardFromDb: ILeaderboard[]) =>
+    leaderboardFromDb.forEach((e) => {
+      e.totalPoints = Number(e.totalPoints);
+      e.totalVictories = Number(e.totalVictories);
+      e.totalDraws = Number(e.totalDraws);
+      e.totalLosses = Number(e.totalLosses);
+      e.goalsFavor = Number(e.goalsFavor);
+      e.goalsOwn = Number(e.goalsOwn);
+      e.goalsBalance = e.goalsFavor - e.goalsOwn;
+      e.efficiency = +((e.totalPoints / (e.totalGames * 3)) * 100).toFixed(2);
+    });
+
+  private static getSortedLeaderboard = (leaderboard: ILeaderboard[]) =>
+    leaderboard.sort((a, b) => {
+      if (a.totalPoints !== b.totalPoints) return b.totalPoints - a.totalPoints;
+      if (a.totalVictories !== b.totalVictories) return b.totalVictories - a.totalVictories;
+      if (a.goalsBalance !== b.goalsBalance) return b.goalsBalance - a.goalsBalance;
+      return b.goalsFavor - a.goalsFavor;
+    });
 }
