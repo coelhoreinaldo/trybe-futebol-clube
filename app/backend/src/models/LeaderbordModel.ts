@@ -28,16 +28,6 @@ export default class ILeaderboardModel {
     const dbData: ILeaderboard[] = await db.query(this.homeTeamStandingsQuery, {
       type: QueryTypes.SELECT,
     });
-
-    dbData.forEach((e) => {
-      e.totalPoints = Number(e.totalPoints);
-      e.totalVictories = Number(e.totalVictories);
-      e.totalDraws = Number(e.totalDraws);
-      e.totalLosses = Number(e.totalLosses);
-      e.goalsFavor = Number(e.goalsFavor);
-      e.goalsOwn = Number(e.goalsOwn);
-    });
-
-    return dbData as unknown as ILeaderboard[];
+    return dbData;
   }
 }
