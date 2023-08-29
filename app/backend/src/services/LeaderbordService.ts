@@ -18,7 +18,7 @@ export default class LeaderboardService {
   }
 
   public async getTeamsStandings(): Promise<ServiceResponse<ILeaderboard[]>> {
-    const dbData = await this.leaderboardModel.findAllAwayTeamStanding();
+    const dbData = await this.leaderboardModel.findAllTeamStanding();
     return { status: 'successful', data: dbData };
   }
 }

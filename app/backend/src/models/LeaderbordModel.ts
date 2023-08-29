@@ -30,11 +30,15 @@ export default class LeaderboardModel implements ILeaderboardModel {
     return dbData;
   }
 
-  public async findAllTeamStamStanding(): Promise<ILeaderboard[]> {
+  public async findAllTeamStanding(): Promise<ILeaderboard[]> {
     const homeTeams = await this.findAllHomeTeamStanding();
     const awayTeams = await this.findAllAwayTeamStanding();
 
+    homeTeams.sort((a, b) => a.name.localeCompare(b.name));
+    awayTeams.sort((a, b) => a.name.localeCompare(b.name));
+
     homeTeams.forEach((e, index) => {
+      e.totalGames += awayTeams[index].totalGames;
       e.totalPoints += awayTeams[index].totalPoints;
       e.totalVictories += awayTeams[index].totalVictories;
       e.totalDraws += awayTeams[index].totalDraws;
@@ -45,7 +49,7 @@ export default class LeaderboardModel implements ILeaderboardModel {
       e.efficiency = +((e.totalPoints / (e.totalGames * 3)) * 100).toFixed(2);
     });
 
-    return homeTeams;
+    return LeaderboardModel.getSortedLeaderboard(homeTeams);
   }
 
   private static getFormattedLeaderboard = (leaderboardFromDb: ILeaderboard[]) =>
