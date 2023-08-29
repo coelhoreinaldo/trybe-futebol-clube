@@ -8,7 +8,7 @@ export default class LeaderboardModel implements ILeaderboardModel {
   private homeTeamStandingsQuery = homeTeamStandingsQuery;
   private awayTeamStandingsQuery = awayTeamStandingsQuery;
 
-  public async findAllHomeTeamStanding(): Promise<ILeaderboard[]> {
+  public async findAllHomeTeamsStandings(): Promise<ILeaderboard[]> {
     const dbData: ILeaderboard[] = await db.query(this.homeTeamStandingsQuery, {
       type: QueryTypes.SELECT,
     });
@@ -19,7 +19,7 @@ export default class LeaderboardModel implements ILeaderboardModel {
     return dbData;
   }
 
-  public async findAllAwayTeamStanding(): Promise<ILeaderboard[]> {
+  public async findAllAwayTeamsStandings(): Promise<ILeaderboard[]> {
     const dbData: ILeaderboard[] = await db.query(this.awayTeamStandingsQuery, {
       type: QueryTypes.SELECT,
     });
@@ -30,9 +30,9 @@ export default class LeaderboardModel implements ILeaderboardModel {
     return dbData;
   }
 
-  public async findAllTeamStanding(): Promise<ILeaderboard[]> {
-    const homeTeams = await this.findAllHomeTeamStanding();
-    const awayTeams = await this.findAllAwayTeamStanding();
+  public async findAllTeamsStandings(): Promise<ILeaderboard[]> {
+    const homeTeams = await this.findAllHomeTeamsStandings();
+    const awayTeams = await this.findAllAwayTeamsStandings();
 
     const newStandings = LeaderboardModel.compareTeamsStandings(homeTeams, awayTeams);
 

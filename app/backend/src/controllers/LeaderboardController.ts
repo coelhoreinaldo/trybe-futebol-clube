@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
-import LeaderboardService from '../services/LeaderbordService';
+import LeaderboardService from '../services/LeaderboardService';
 
 export default class LeaderboardController {
   constructor(
