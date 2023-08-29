@@ -1,6 +1,7 @@
 import { QueryTypes } from 'sequelize';
 import ILeaderboard from '../Interfaces/leaderboard/ILeaderboard';
 import db from '../database/models';
+import { ILeaderboardModel } from '../Interfaces/leaderboard/ILeaderboardModel';
 
 const homeTeamStandingsQuery = `
   SELECT t.team_name AS name,
@@ -18,10 +19,9 @@ const homeTeamStandingsQuery = `
   ON t.id = m.home_team_id
   WHERE m.in_progress = 0
   GROUP BY t.id
-  ORDER BY totalPoints DESC, goalsFavor DESC;
 `;
 
-export default class ILeaderboardModel {
+export default class LeaderboardModel implements ILeaderboardModel {
   private homeTeamStandingsQuery = homeTeamStandingsQuery;
 
   public async findAllHomeTeamStanding(): Promise<ILeaderboard[]> {
