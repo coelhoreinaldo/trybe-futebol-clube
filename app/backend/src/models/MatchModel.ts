@@ -51,6 +51,6 @@ export default class implements IMatchModel {
   public async create(matchData: NewEntity<IMatch>): Promise<IMatch> {
     const dbData = await this.model.create(matchData);
 
-    return dbData.dataValues;
+    return dbData;
   }
 }

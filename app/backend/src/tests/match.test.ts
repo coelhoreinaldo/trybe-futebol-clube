@@ -160,7 +160,7 @@ describe('the /matches endpoint', () => {
     });
   });
   describe('by post method', () => {
-    it.skip('should return status 201 and create a match', async function () {
+    it('should return status 201 and create a match', async function () {
       sinon.stub(JWT, 'verify').resolves();
       sinon.stub(Validations, 'validateToken').returns();
       sinon
