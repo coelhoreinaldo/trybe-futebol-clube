@@ -28,7 +28,7 @@ class Validations {
     }
 
     req.body.userData = verifyToken ;
-    req.body.userData.password = '';
+    delete req.body.userData.password;
     next();
   }
 }
