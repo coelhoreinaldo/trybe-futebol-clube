@@ -26,7 +26,7 @@ Criei um site informativo sobre partidas e classificações de futebol. Desenvol
 
 ## 🧪 Tests
 
-![100% de aprovação no projeto](./tests.png)
+![Cobertura de testes](./tests.png)
 
 ## 📝 Nota
 

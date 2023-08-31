@@ -27,7 +27,8 @@ class Validations {
       return res.status(401).json({ message: verifyToken });
     }
 
-    req.body.userData = verifyToken;
+    req.body.userData = verifyToken ;
+    req.body.userData.password = '';
     next();
   }
 }
